@@ -304,5 +304,25 @@ export const roomLockInputSchema = z.object({
 })
 export type RoomLockInput = z.infer<typeof roomLockInputSchema>
 
+export interface RoomSummary {
+  id: string
+  title: string
+  date_from: string
+  date_to: string
+  time_from: string
+  time_to: string
+  duration_min: number
+  quorum: number
+  status: "open" | "confirmed"
+  locked_slot: LockedSlot | null
+  created_at: string
+  joined_at?: string
+  owner_name?: string
+  participant_count: number
+  can_edit: boolean
+  is_owner: boolean
+}
+
+
 
 
