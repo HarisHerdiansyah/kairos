@@ -29,7 +29,7 @@ Dokumen ini merumuskan tahapan kerja secara sistematis dan bertahap berdasarkan 
 
 ## Tahapan Pelaksanaan Kerja
 
-### Tahap 1: Setup Infrastruktur, Database (Prisma), dan Utilitas Dasar
+### Tahap 1: Setup Infrastruktur, Database (Prisma), dan Utilitas Dasar [SELESAI]
 
 #### Prerequisites
 - Database PostgreSQL aktif dan URL koneksi (`DATABASE_URL`) tersedia di `.env`.

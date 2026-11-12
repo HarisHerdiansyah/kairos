@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoomStatus {
+  open
+  confirmed
+}
+
+model User {
+  id         String   @id @default(cuid())
+  google_id  String   @unique
+  email      String   @unique
+  name       String
+  baseline   Json     @default("[]")
+  overrides  Json     @default("[]")
+  created_at DateTime @default(now())
+
+  owned_sessions Session[]            @relation("SessionOwner")
+  participations SessionParticipant[]
+
+  @@map("users")
+}
+
+model Session {
+  id           String     @id
+  owner_id     String
+  title        String
+  date_from    String // YYYY-MM-DD
+  date_to      String // YYYY-MM-DD
+  time_from    String // HH:mm (e.g. "08:00")
+  time_to      String // HH:mm (e.g. "17:00")
+  duration_min Int // duration in minutes
+  quorum       Int        @default(2)
+  status       RoomStatus @default(open)
+  locked_slot  Json?
+  created_at   DateTime   @default(now())
+
+  owner        User                 @relation("SessionOwner", fields: [owner_id], references: [id], onDelete: Cascade)
+  participants SessionParticipant[]
+
+  @@index([owner_id])
+  @@map("sessions")
+}
+
+model SessionParticipant {
+  id               String   @id @default(cuid())
+  session_id       String
+  user_id          String?
+  guest_name       String?
+  guest_token_hash String?
+  room_input       Json     @default("[]")
+  joined_at        DateTime @default(now())
+
+  session Session @relation(fields: [session_id], references: [id], onDelete: Cascade)
+  user    User?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([session_id, user_id])
+  @@index([session_id])
+  @@index([user_id])
+  @@index([guest_token_hash])
+  @@map("session_participants")
+}
