@@ -1,20 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
-import {
-  CalendarClock,
-  LayoutDashboard,
-  LogOut,
-  UserCheck,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
+import { CalendarClock, UserCheck } from "lucide-react";
+import { NavbarPopover } from "./NavbarPopover";
 
 export function Navbar() {
-  const pathname = usePathname();
   const { data: session, status } = useSession();
 
   const isLoading = status === "loading";
@@ -35,23 +26,6 @@ export function Navbar() {
               Kairos
             </p>
           </Link>
-
-          {isAuthenticated && (
-            <nav className="hidden items-center gap-1 md:flex">
-              <Link
-                href="/dashboard"
-                className={cn(
-                  "inline-flex items-center gap-2 rounded-3xl px-3.5 py-1.5 text-sm font-medium transition-colors",
-                  pathname?.startsWith("/dashboard")
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                )}
-              >
-                <LayoutDashboard className="size-4" />
-                Dashboard Jadwal
-              </Link>
-            </nav>
-          )}
         </div>
 
         <div className="flex items-center gap-3">
@@ -59,29 +33,14 @@ export function Navbar() {
             <div className="h-9 w-36 animate-pulse rounded-3xl bg-muted" />
           )}
           {!isLoading && isAuthenticated && (
-            <>
-              <Link href="/dashboard" className="md:hidden">
-                <Button variant="outline" size="sm">
-                  <LayoutDashboard className="size-4" />
-                  Dashboard
-                </Button>
-              </Link>
-              <Badge
-                variant="secondary"
-                className="hidden gap-1.5 px-3 py-1 sm:inline-flex"
-              >
-                <UserCheck className="size-3.5" />
-                <span className="max-w-36 truncate">{session.user.name}</span>
-              </Badge>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => signOut({ callbackUrl: "/" })}
-              >
-                <LogOut className="size-4" />
-                <span>Keluar</span>
-              </Button>
-            </>
+            <NavbarPopover
+              trigger={
+                <div className="flex items-center gap-2 rounded-3xl bg-accent px-3 py-1.5 text-sm font-medium border-primary text-primary cursor-pointer hover:bg-accent/80">
+                  <UserCheck className="size-3.5" />
+                  <p>{session.user.name}</p>
+                </div>
+              }
+            />
           )}
         </div>
       </div>
