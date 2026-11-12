@@ -1,15 +1,15 @@
-import { getAuthUser } from "@/lib/auth"
-import { apiError, apiSuccess, handleApiError } from "@/lib/api-response"
-import { prisma } from "@/lib/prisma"
-import { roomCreateInputSchema } from "@/types/kairos"
-import { isValidDateString } from "@/lib/time-utils"
-import { generateRoomId } from "@/lib/guest-token"
+import { getAuthUser } from "@/lib/auth";
+import { apiError, apiSuccess, handleApiError } from "@/lib/api-response";
+import { prisma } from "@/lib/prisma";
+import { roomCreateInputSchema } from "@/types/kairos";
+import { isValidDateString } from "@/lib/time-utils";
+import { generateRoomId } from "@/lib/guest-token";
 
 export async function GET() {
   try {
-    const user = await getAuthUser()
+    const user = await getAuthUser();
     if (!user) {
-      return apiError("Belum terautentikasi", 401)
+      return apiError("Belum terautentikasi", 401);
     }
 
     // 1. Rooms created by user
@@ -26,7 +26,7 @@ export async function GET() {
         },
       },
       orderBy: { created_at: "desc" },
-    })
+    });
 
     const owned_rooms = ownedSessions.map((s) => ({
       id: s.id,
@@ -43,7 +43,7 @@ export async function GET() {
       participant_count: s.participants.length,
       can_edit: s.status === "open" && s.participants.length <= 1,
       is_owner: true,
-    }))
+    }));
 
     // 2. Rooms joined by user where user is not the owner
     const participations = await prisma.sessionParticipant.findMany({
@@ -71,10 +71,10 @@ export async function GET() {
         },
       },
       orderBy: { joined_at: "desc" },
-    })
+    });
 
     const joined_rooms = participations.map((p) => {
-      const s = p.session
+      const s = p.session;
       return {
         id: s.id,
         title: s.title,
@@ -92,36 +92,36 @@ export async function GET() {
         participant_count: s.participants.length,
         can_edit: false,
         is_owner: false,
-      }
-    })
+      };
+    });
 
     return apiSuccess({
       owned_rooms,
       joined_rooms,
-    })
+    });
   } catch (error) {
-    return handleApiError(error)
+    return handleApiError(error);
   }
 }
 
 export async function POST(request: Request) {
   try {
-    const user = await getAuthUser()
+    const user = await getAuthUser();
     if (!user) {
-      return apiError("Belum terautentikasi", 401)
+      return apiError("Belum terautentikasi", 401);
     }
 
-    const body = await request.json()
-    const input = roomCreateInputSchema.parse(body)
+    const body = await request.json();
+    const input = roomCreateInputSchema.parse(body);
 
     if (!isValidDateString(input.date_from)) {
-      return apiError("Format tanggal mulai tidak valid", 400)
+      return apiError("Format tanggal mulai tidak valid", 400);
     }
     if (!isValidDateString(input.date_to)) {
-      return apiError("Format tanggal selesai tidak valid", 400)
+      return apiError("Format tanggal selesai tidak valid", 400);
     }
 
-    const roomId = generateRoomId(21)
+    const roomId = generateRoomId(21);
 
     // Create session and add initiator as the first participant
     const session = await prisma.$transaction(async (tx) => {
@@ -138,7 +138,7 @@ export async function POST(request: Request) {
           quorum: input.quorum,
           status: "open",
         },
-      })
+      });
 
       await tx.sessionParticipant.create({
         data: {
@@ -146,13 +146,13 @@ export async function POST(request: Request) {
           user_id: user.id,
           room_input: [],
         },
-      })
+      });
 
-      return newSession
-    })
+      return newSession;
+    });
 
-    return apiSuccess(session, 201)
+    return apiSuccess(session, 201);
   } catch (error) {
-    return handleApiError(error)
+    return handleApiError(error);
   }
 }
