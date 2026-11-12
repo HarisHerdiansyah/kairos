@@ -50,7 +50,7 @@ Dokumen ini merumuskan tahapan kerja secara sistematis dan bertahap berdasarkan 
 
 ---
 
-### Tahap 2: Autentikasi Google OAuth (NextAuth JWT) & Manajemen Identitas Guest
+### Tahap 2: Autentikasi Google OAuth (NextAuth JWT) & Manajemen Identitas Guest [SELESAI]
 
 #### Prerequisites
 - **Tahap 1** selesai.
@@ -72,7 +72,7 @@ Dokumen ini merumuskan tahapan kerja secara sistematis dan bertahap berdasarkan 
 
 ---
 
-### Tahap 3: Backend API Jadwal Pribadi (Baseline F2 & Override F3)
+### Tahap 3: Backend API Jadwal Pribadi (Baseline F2 & Override F3) [SELESAI]
 
 #### Prerequisites
 - **Tahap 1** dan **Tahap 2** selesai.
@@ -97,7 +97,7 @@ Dokumen ini merumuskan tahapan kerja secara sistematis dan bertahap berdasarkan 
 
 ---
 
-### Tahap 4: Engine Kalkulasi Ketersediaan, Best Time, Opsi Toleransi, & Deadlock
+### Tahap 4: Engine Kalkulasi Ketersediaan, Best Time, Opsi Toleransi, & Deadlock [SELESAI]
 
 #### Prerequisites
 - **Tahap 1** dan **Tahap 3** (utilitas waktu & tipe data) selesai.
@@ -128,7 +128,7 @@ Dokumen ini merumuskan tahapan kerja secara sistematis dan bertahap berdasarkan 
 
 ---
 
-### Tahap 5: Backend API Manajemen Room, Partisipasi, & Lock Schedule
+### Tahap 5: Backend API Manajemen Room, Partisipasi, & Lock Schedule [SELESAI]
 
 #### Prerequisites
 - **Tahap 2**, **Tahap 3**, dan **Tahap 4** selesai.
@@ -163,7 +163,7 @@ Dokumen ini merumuskan tahapan kerja secara sistematis dan bertahap berdasarkan 
 
 ---
 
-### Tahap 6: Fondasi UI, Komponen `shadcn/ui`, & Halaman Landing/Autentikasi (F1)
+### Tahap 6: Fondasi UI, Komponen `shadcn/ui`, & Halaman Landing/Autentikasi (F1) [SELESAI]
 
 #### Prerequisites
 - **Tahap 2** selesai.
@@ -182,7 +182,7 @@ Dokumen ini merumuskan tahapan kerja secara sistematis dan bertahap berdasarkan 
 
 ---
 
-### Tahap 7: Frontend Dashboard User (Baseline F2, Override F3, Buat & Histori Room F4)
+### Tahap 7: Frontend Dashboard User (Baseline F2, Override F3, Buat & Histori Room F4) [SELESAI]
 
 #### Prerequisites
 - **Tahap 3**, **Tahap 5**, dan **Tahap 6** selesai.
@@ -205,7 +205,7 @@ Dokumen ini merumuskan tahapan kerja secara sistematis dan bertahap berdasarkan 
 
 ---
 
-### Tahap 8: Frontend Halaman Room Publik (Grid F5, Heatmap F6, Rekomendasi F7/F8, & Lock F9)
+### Tahap 8: Frontend Halaman Room Publik (Grid F5, Heatmap F6, Rekomendasi F7/F8, & Lock F9) [SELESAI]
 
 #### Prerequisites
 - **Tahap 5**, **Tahap 6**, dan **Tahap 7** selesai.
@@ -236,7 +236,7 @@ Dokumen ini merumuskan tahapan kerja secara sistematis dan bertahap berdasarkan 
 
 ---
 
-### Tahap 9: Verifikasi Akhir, Uji Kasus Batas (Edge Cases), & Audit Kepatuhan
+### Tahap 9: Verifikasi Akhir, Uji Kasus Batas (Edge Cases), & Audit Kepatuhan [SELESAI]
 
 #### Prerequisites
 - **Tahap 1 s/d Tahap 8** selesai.
