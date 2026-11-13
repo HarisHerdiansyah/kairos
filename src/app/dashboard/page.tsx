@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useCallback, useEffect, useReducer, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -19,13 +19,13 @@ import { UnauthenticatedView } from "@/components/dashboard/UnauthenticatedView"
 
 export default function DashboardPage() {
   const { status: authStatus } = useSession();
-  const [data, dispatch] = React.useReducer(
+  const [data, dispatch] = useReducer(
     dashboardDataReducer,
     initialDashboardDataState,
   );
-  const roomCardRef = React.useRef<RoomCardHandle>(null);
+  const roomCardRef = useRef<RoomCardHandle>(null);
 
-  const fetchDashboardData = React.useCallback(async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       const [schedRes, roomsRes] = await Promise.all([
         fetch("/api/v1/schedule"),
@@ -60,7 +60,7 @@ export default function DashboardPage() {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (authStatus !== "authenticated") return;
     let active = true;
     Promise.all([fetch("/api/v1/schedule"), fetch("/api/v1/rooms")])

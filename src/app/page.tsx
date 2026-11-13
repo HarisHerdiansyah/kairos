@@ -90,8 +90,8 @@ export default function HomePage() {
 
       {/* Sequential Workflow Section (01, 02, 03) */}
       <section className="mt-16 border-t border-border pt-12">
-        <div className="mb-8 max-w-2xl">
-          <h2 className="font-serif text-2xl font-semibold tracking-tight text-foreground">
+        <div className="mb-8">
+          <h2 className="text-center font-serif text-2xl font-semibold tracking-tight text-foreground">
             Hanya tiga langkah, dari rutinitas pribadi hingga penentuan
             kolaboratif!
           </h2>

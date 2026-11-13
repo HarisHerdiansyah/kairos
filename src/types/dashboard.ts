@@ -1,4 +1,4 @@
-import type * as React from "react";
+import type { Ref } from "react";
 import type { BaselineItem, OverrideItem, RoomSummary } from "@/types/kairos";
 
 // -------------------------------------------------------------
@@ -101,6 +101,26 @@ export type OverrideDialogAction =
   | { type: "SET_UNBLOCK_ERROR"; error: string | null }
   | { type: "SET_UNBLOCK_SUBMITTING"; submitting: boolean };
 
+export interface BlockDialogProps {
+  state: OverrideDialogState;
+  dispatch: (action: OverrideDialogAction) => void;
+  onRefresh: () => Promise<void>;
+}
+
+export interface UnblockDialogProps {
+  state: OverrideDialogState;
+  baseline: BaselineItem[];
+  dispatch: (action: OverrideDialogAction) => void;
+  onRefresh: () => Promise<void>;
+}
+
+export interface OverrideDialogProps {
+  state: OverrideDialogState;
+  baseline: BaselineItem[];
+  dispatch: (action: OverrideDialogAction) => void;
+  onRefresh: () => Promise<void>;
+}
+
 export interface OverrideCardProps {
   baseline: BaselineItem[];
   overrides: OverrideItem[];
@@ -141,10 +161,16 @@ export interface RoomCardHandle {
   openCreateRoom: () => void;
 }
 
+export interface RoomDialogProps {
+  form: RoomFormState;
+  dispatch: (action: RoomFormAction) => void;
+  onRefresh: () => Promise<void>;
+}
+
 export interface RoomCardProps {
   ownedRooms: RoomSummary[];
   joinedRooms: RoomSummary[];
   onRefresh: () => Promise<void>;
-  ref?: React.Ref<RoomCardHandle>;
+  ref?: Ref<RoomCardHandle>;
 }
 

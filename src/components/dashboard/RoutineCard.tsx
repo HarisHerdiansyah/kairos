@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { type FormEvent, useReducer } from "react";
 import { Edit3, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -23,7 +23,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -32,7 +31,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function RoutineCard({ baseline, onRefresh }: RoutineCardProps) {
-  const [form, dispatch] = React.useReducer(
+  const [form, dispatch] = useReducer(
     baselineFormReducer,
     initialBaselineFormState,
   );
@@ -45,7 +44,7 @@ export function RoutineCard({ baseline, onRefresh }: RoutineCardProps) {
     dispatch({ type: "OPEN_EDIT", item });
   };
 
-  const handleSaveBaseline = async (e: React.FormEvent) => {
+  const handleSaveBaseline = async (e: FormEvent) => {
     e.preventDefault();
     dispatch({ type: "SET_ERROR", error: null });
 
@@ -213,14 +212,8 @@ export function RoutineCard({ baseline, onRefresh }: RoutineCardProps) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="font-serif text-lg">
-              {form.editingId
-                ? "Edit Jadwal Rutin"
-                : "Tambah Jadwal Rutin Mingguan"}
+              {form.editingId ? "Edit Jadwal Rutin" : "Tambah Jadwal Rutin"}
             </DialogTitle>
-            <DialogDescription>
-              Slot waktu yang disimpan berlaku berulang setiap minggu dan
-              otomatis menandai Anda sibuk di setiap ruang temu.
-            </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleSaveBaseline} className="space-y-4">
@@ -232,7 +225,7 @@ export function RoutineCard({ baseline, onRefresh }: RoutineCardProps) {
             )}
 
             <div className="space-y-1.5">
-              <Label htmlFor="baseline-day">Hari (Senin–Minggu)</Label>
+              <Label htmlFor="baseline-day">Hari (Senin-Minggu)</Label>
               <select
                 id="baseline-day"
                 value={form.day}
@@ -324,7 +317,7 @@ export function RoutineCard({ baseline, onRefresh }: RoutineCardProps) {
                 Batal
               </Button>
               <Button type="submit" disabled={form.submitting}>
-                {form.submitting ? "Menyimpan..." : "Simpan jadwal rutin"}
+                {form.submitting ? "Menyimpan..." : "Simpan jadwal"}
               </Button>
             </DialogFooter>
           </form>

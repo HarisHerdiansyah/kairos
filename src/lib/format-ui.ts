@@ -67,6 +67,20 @@ export function formatDateId(dateStr: string, includeDayName = true): string {
 }
 
 /**
+ * Formats a date range into Indonesian format (e.g. "Kam, 12 Nov 2026 – Jum, 13 Nov 2026", or single date if same).
+ */
+export function formatDateRangeId(
+  dateFrom: string,
+  dateTo: string,
+  includeDayName = true,
+): string {
+  if (dateFrom === dateTo) {
+    return formatDateId(dateFrom, includeDayName)
+  }
+  return `${formatDateId(dateFrom, includeDayName)} – ${formatDateId(dateTo, includeDayName)}`
+}
+
+/**
  * Formats a YYYY-MM-DD date string into compact header format for grid columns (e.g., "Kam, 12 Nov").
  */
 export function formatShortDateHeader(dateStr: string): { dayName: string; dateLabel: string } {
