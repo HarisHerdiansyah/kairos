@@ -19,7 +19,7 @@ export function TimefulGridCell({
       }}
       onMouseEnter={() => onMouseEnter(cell)}
       className={cn(
-        "relative h-7 border-r border-border p-0 align-top transition-colors select-none last:border-r-0",
+        "relative h-7 border-r border-border p-0 align-top transition-colors select-none",
         cell.topBorderClass,
         cell.cellSurfaceClass,
         cell.canInteract

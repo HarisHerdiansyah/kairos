@@ -39,7 +39,8 @@ export function RoomHeader({ room, isOwner, onCopyLink }: RoomHeaderProps) {
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-sans text-xs text-muted-foreground">
           <span>
-            Tanggal: {formatDateId(room.date_from)} – {formatDateId(room.date_to)}
+            Tanggal: {formatDateId(room.date_from)} –{" "}
+            {formatDateId(room.date_to)}
           </span>
           <span>•</span>
           <span>
@@ -48,17 +49,16 @@ export function RoomHeader({ room, isOwner, onCopyLink }: RoomHeaderProps) {
           <span>•</span>
           <span>Target Durasi: {room.duration_min} menit</span>
           <span>•</span>
-          <span>Kuorum Minimal: {room.quorum} peserta</span>
+          <span>Peserta Minimal: {room.quorum}</span>
         </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
         <Button variant="outline" size="sm" onClick={onCopyLink}>
           <Copy className="size-4" />
-          <span>Salin tautan ruang</span>
+          <span>Salin tautan sesi</span>
         </Button>
       </div>
     </div>
   );
 }
-

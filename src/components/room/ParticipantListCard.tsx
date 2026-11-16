@@ -12,15 +12,15 @@ export function ParticipantListCard({
 }: ParticipantListCardProps) {
   return (
     <Card className="border-border bg-card">
-      <CardHeader className="border-b border-border pb-3">
+      <CardHeader className="border-b border-border">
         <div className="flex items-center justify-between">
           <CardTitle className="font-serif text-base">
-            Peserta Bergabung ({participants.length})
+            Peserta ({participants.length})
           </CardTitle>
           <Users className="size-4 text-muted-foreground" />
         </div>
       </CardHeader>
-      <CardContent className="pt-4">
+      <CardContent>
         <div className="flex flex-wrap gap-2">
           {participants.map((p) => (
             <Badge

@@ -9,9 +9,7 @@ import type {
   DateColumnHeader,
   DragSelectionBounds,
   GridCellCoord,
-  GridViewMode,
   HighlightedWindow,
-  HoveredSlotInfo,
   RoomActor,
   RoomInfo,
   RoomParticipant,
@@ -42,16 +40,6 @@ export function getHeatmapToneClass(
     return "bg-chart-1/80";
   }
   return "bg-chart-1";
-}
-
-export function getHeaderDescription(actor: RoomActor): string {
-  if (actor.actor_type === "user" && actor.is_participant) {
-    return "Jadwal pribadi Anda telah dimuat. Klik atau seret blok sibuk Anda bila ingin menandai 'Tetap Hadir'.";
-  }
-  if (actor.actor_type === "guest" && actor.is_participant) {
-    return "Klik dan seret (drag) pada kalender untuk menandai rentang waktu luang Anda.";
-  }
-  return "Peta visual kepadatan kehadiran peserta pada setiap slot 30 menit tanpa membuka privasi kegiatan.";
 }
 
 export function isSlotInHighlightedWindow(
@@ -86,47 +74,6 @@ export function getParticipantRoleSuffix(participant: RoomParticipant): string {
     return " (Guest)";
   }
   return "";
-}
-
-export function getPersonalInspectorText(
-  slot: HoveredSlotInfo,
-  actor: RoomActor,
-): string | null {
-  if (!actor.is_participant || !slot.personalStatus) {
-    return null;
-  }
-
-  if (actor.actor_type === "guest") {
-    if (slot.personalStatus === "free") {
-      return "Status Anda: Hadir (Luang) • Klik/seret untuk batalkan";
-    }
-    return "Status Anda: Belum ditandai luang • Klik/seret jika Anda bisa hadir";
-  }
-
-  if (slot.personalStatus === "overridden_free") {
-    const labelInfo = slot.personalLabel ? ` (${slot.personalLabel})` : "";
-    return `Anda: Tetap Hadir${labelInfo} • Klik/seret untuk kembalikan ke sibuk`;
-  }
-
-  if (slot.personalStatus === "busy") {
-    const activityName = slot.personalLabel || "Sibuk";
-    return `Jadwal Anda: ${activityName} • Klik/seret jika tetap bisa hadir`;
-  }
-
-  return "Jadwal Anda: Luang (Otomatis hadir)";
-}
-
-export function getDefaultHintText(
-  actor: RoomActor,
-  viewMode: GridViewMode,
-): string {
-  if (!actor.is_participant || viewMode === "heatmap_only") {
-    return "Arahkan kursor pada kotak kalender untuk melihat detail jumlah peserta yang luang di setiap jam.";
-  }
-  if (actor.actor_type === "guest") {
-    return "Klik dan seret (drag) pada kalender di bawah untuk menandai rentang jam waktu luang Anda.";
-  }
-  return "Arahkan kursor untuk melihat detail slot. Klik dan seret pada blok sibuk Anda bila ingin menandai 'Tetap Hadir'.";
 }
 
 export function buildHeatmapMap(
@@ -203,17 +150,11 @@ export function canSlotInteract(
   dateStr: string,
   slotStart: string,
   roomStatus: RoomInfo["status"],
-  viewMode: GridViewMode,
   actor: RoomActor,
   savingBatch: boolean,
   personalMap: Map<string, PersonalGridSlot>,
 ): boolean {
-  if (
-    roomStatus !== "open" ||
-    viewMode !== "interactive" ||
-    !actor.is_participant ||
-    savingBatch
-  ) {
+  if (roomStatus !== "open" || !actor.is_participant || savingBatch) {
     return false;
   }
   if (actor.actor_type === "guest") {
@@ -257,7 +198,6 @@ interface ComputeDraggedRoomInputParams {
   dates: string[];
   daySlots: Array<{ start: string; end: string }>;
   roomStatus: RoomInfo["status"];
-  viewMode: GridViewMode;
   actor: RoomActor;
   savingBatch: boolean;
   personalMap: Map<string, PersonalGridSlot>;
@@ -270,7 +210,6 @@ export function computeDraggedRoomInput({
   dates,
   daySlots,
   roomStatus,
-  viewMode,
   actor,
   savingBatch,
   personalMap,
@@ -301,7 +240,6 @@ export function computeDraggedRoomInput({
           dateStr,
           slot.start,
           roomStatus,
-          viewMode,
           actor,
           savingBatch,
           personalMap,
@@ -368,7 +306,6 @@ interface BuildGridMatrixParams {
   daySlots: Array<{ start: string; end: string }>;
   roomStatus: RoomInfo["status"];
   actor: RoomActor;
-  viewMode: GridViewMode;
   savingBatch: boolean;
   participantCount: number;
   heatmapMap: Map<string, HeatmapSlot>;
@@ -384,7 +321,6 @@ export function buildTimefulGridRows({
   daySlots,
   roomStatus,
   actor,
-  viewMode,
   savingBatch,
   participantCount,
   heatmapMap,
@@ -394,8 +330,6 @@ export function buildTimefulGridRows({
   dragBounds,
   highlightedWindow,
 }: BuildGridMatrixParams): TimefulRowViewModel[] {
-  const isInteractiveMode = viewMode === "interactive" && actor.is_participant;
-
   return daySlots.map((slot, rowIdx) => {
     const isFullHour = slot.start.endsWith(":00");
     const prevSlot = rowIdx > 0 ? daySlots[rowIdx - 1] : null;
@@ -418,7 +352,6 @@ export function buildTimefulGridRows({
         0,
         Math.min(totalP, rawAvailable + deltaAvailable),
       );
-      const busyCount = Math.max(0, totalP - availableCount);
 
       const { status: personalStatus, label: personalLabel } =
         getEffectivePersonalStatus(
@@ -442,18 +375,17 @@ export function buildTimefulGridRows({
         dateStr,
         slot.start,
         roomStatus,
-        viewMode,
         actor,
         savingBatch,
         personalMap,
       );
 
       const isUserBusyBlock =
-        isInteractiveMode &&
+        actor.is_participant &&
         actor.actor_type === "user" &&
         personalStatus === "busy";
       const isUserOverrideBlock =
-        isInteractiveMode &&
+        actor.is_participant &&
         actor.actor_type === "user" &&
         personalStatus === "overridden_free";
 
@@ -471,7 +403,7 @@ export function buildTimefulGridRows({
       const isOverrideBlockStart = isUserOverrideBlock && !isSameOverrideAsPrev;
 
       const isGuestSelected =
-        isInteractiveMode &&
+        actor.is_participant &&
         actor.actor_type === "guest" &&
         personalStatus === "free";
 
@@ -504,18 +436,6 @@ export function buildTimefulGridRows({
         topBorderClass = "border-t border-t-border";
       }
 
-      const hoverInfo: HoveredSlotInfo = {
-        date: dateStr,
-        start: slot.start,
-        end: slot.end,
-        availableCount,
-        busyCount,
-        totalParticipants: totalP,
-        personalStatus,
-        personalLabel,
-        canInteract,
-      };
-
       return {
         key,
         colIdx,
@@ -531,7 +451,6 @@ export function buildTimefulGridRows({
         personalLabel,
         topBorderClass,
         cellSurfaceClass,
-        hoverInfo,
       };
     });
 

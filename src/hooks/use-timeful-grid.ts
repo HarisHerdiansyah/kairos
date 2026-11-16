@@ -4,8 +4,6 @@ import { toast } from "sonner";
 import type { RoomInputSlot } from "@/types/kairos";
 import type {
   GridCellCoord,
-  GridViewMode,
-  HoveredSlotInfo,
   TimefulCellViewModel,
   TimefulGridProps,
 } from "@/types/room";
@@ -41,8 +39,6 @@ export function useTimefulGrid({
   | "highlightedWindow"
   | "onSaveAvailabilityBatch"
 >) {
-  const [viewMode, setViewMode] = useState<GridViewMode>("interactive");
-  const [hoveredSlot, setHoveredSlot] = useState<HoveredSlotInfo | null>(null);
   const [dragStart, setDragStart] = useState<GridCellCoord | null>(null);
   const [dragCurrent, setDragCurrent] = useState<GridCellCoord | null>(null);
   const [dragAction, setDragAction] = useState<"add" | "remove" | "auto">(
@@ -91,7 +87,6 @@ export function useTimefulGrid({
         dates,
         daySlots,
         roomStatus: room.status,
-        viewMode,
         actor,
         savingBatch,
         personalMap,
@@ -103,7 +98,6 @@ export function useTimefulGrid({
       dates,
       daySlots,
       room.status,
-      viewMode,
       actor,
       savingBatch,
       personalMap,
@@ -188,12 +182,7 @@ export function useTimefulGrid({
 
   const handleCellMouseDown = useCallback(
     (cell: TimefulCellViewModel) => {
-      if (
-        room.status !== "open" ||
-        viewMode !== "interactive" ||
-        !actor.is_participant ||
-        savingBatch
-      ) {
+      if (room.status !== "open" || !actor.is_participant || savingBatch) {
         return;
       }
 
@@ -210,13 +199,11 @@ export function useTimefulGrid({
       setDragAction(initialAction);
       setDragStart(coord);
       setDragCurrent(coord);
-      setHoveredSlot(cell.hoverInfo);
     },
-    [room.status, viewMode, actor.is_participant, savingBatch, baseInputSet],
+    [room.status, actor.is_participant, savingBatch, baseInputSet],
   );
 
   const handleCellMouseEnter = useCallback((cell: TimefulCellViewModel) => {
-    setHoveredSlot(cell.hoverInfo);
     if (!latestDragRef.current.isDragging) return;
     setDragCurrent({ colIdx: cell.colIdx, rowIdx: cell.rowIdx });
   }, []);
@@ -228,7 +215,6 @@ export function useTimefulGrid({
         daySlots,
         roomStatus: room.status,
         actor,
-        viewMode,
         savingBatch,
         participantCount: participants.length,
         heatmapMap,
@@ -243,7 +229,6 @@ export function useTimefulGrid({
       daySlots,
       room.status,
       actor,
-      viewMode,
       savingBatch,
       participants.length,
       heatmapMap,
@@ -256,10 +241,6 @@ export function useTimefulGrid({
   );
 
   return {
-    viewMode,
-    setViewMode,
-    hoveredSlot,
-    setHoveredSlot,
     savingBatch,
     overrideCount: activeRoomInput.length,
     dateHeaders,

@@ -51,20 +51,6 @@ export interface RoomDetailData {
   personal_room_input: RoomInputSlot[];
 }
 
-export type GridViewMode = "interactive" | "heatmap_only";
-
-export interface HoveredSlotInfo {
-  date: string;
-  start: string;
-  end: string;
-  availableCount: number;
-  busyCount: number;
-  totalParticipants: number;
-  personalStatus: "free" | "busy" | "overridden_free" | null;
-  personalLabel: string | null;
-  canInteract: boolean;
-}
-
 export interface HighlightedWindow {
   date: string;
   start: string;
@@ -104,7 +90,6 @@ export interface TimefulCellViewModel {
   personalLabel: string | null;
   topBorderClass: string;
   cellSurfaceClass: string;
-  hoverInfo: HoveredSlotInfo;
 }
 
 export interface TimefulRowViewModel {
@@ -134,16 +119,6 @@ export interface ConfirmedRoomViewProps {
 export interface AnonymousGateBannerProps {
   roomId: string;
   onJoined: () => Promise<void>;
-}
-
-export interface GridInspectorBarProps {
-  hoveredSlot: HoveredSlotInfo | null;
-  actor: RoomActor;
-  viewMode: GridViewMode;
-  quorum: number;
-  totalParticipants: number;
-  overrideCount: number;
-  savingBatch: boolean;
 }
 
 export interface TimefulGridProps {

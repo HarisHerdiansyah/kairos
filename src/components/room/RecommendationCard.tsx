@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, Copy, Info, Lock, Sparkles } from "lucide-react";
+import { AlertTriangle, Copy, Lock, Clock } from "lucide-react";
 
 import type { RecommendationCardProps } from "@/types/room";
 import { formatDateId } from "@/lib/format-ui";
@@ -9,13 +9,7 @@ import { cn } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function RecommendationCard({
   room,
@@ -29,20 +23,10 @@ export function RecommendationCard({
   const renderContent = () => {
     if (calculation?.waiting_for_participants) {
       return (
-        <Alert>
-          <Info className="size-4" />
-          <AlertTitle>Menunggu peserta lain bergabung</AlertTitle>
-          <AlertDescription className="space-y-2 text-xs">
-            <p>
-              Saat ini baru ada 1 peserta di dalam ruang temu. Bagikan tautan
-              publik agar sistem dapat menghitung irisan waktu kelompok.
-            </p>
-            <Button variant="outline" size="xs" onClick={onCopyLink}>
-              <Copy className="size-3" />
-              <span>Salin tautan ruang</span>
-            </Button>
-          </AlertDescription>
-        </Alert>
+        <Button variant="outline" size="xs" onClick={onCopyLink}>
+          <Copy className="size-3" />
+          <span>Salin tautan ruang</span>
+        </Button>
       );
     }
 
@@ -168,7 +152,10 @@ export function RecommendationCard({
                         {rec.start} – {rec.end} WIB
                       </p>
                     </div>
-                    <Badge variant="secondary" className="font-sans text-[11px]">
+                    <Badge
+                      variant="secondary"
+                      className="font-sans text-[11px]"
+                    >
                       {rec.available_count}/{rec.total_participants} hadir
                     </Badge>
                   </div>
@@ -262,18 +249,13 @@ export function RecommendationCard({
       <CardHeader className="border-b border-border pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="font-serif text-lg">
-            Rekomendasi Waktu (Best Time)
+            Rekomendasi Waktu
           </CardTitle>
-          <Sparkles className="size-4 text-primary" />
+          <Clock className="size-4" />
         </div>
-        <CardDescription className="text-xs">
-          Arahkan kursor pada kartu rekomendasi untuk menyorot posisi jam di
-          atas kalender.
-        </CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-4 pt-4">{renderContent()}</CardContent>
     </Card>
   );
 }
-
