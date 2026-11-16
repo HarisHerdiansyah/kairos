@@ -16,7 +16,6 @@ function RoomDetailContent() {
     fetchRoomDetail,
     copyRoomLink,
     saveAvailabilityBatch,
-    resetToPersonalSchedule,
     setHighlightedWindow,
     openLockModal,
     setLockDialogOpen,
@@ -48,10 +47,8 @@ function RoomDetailContent() {
         <OpenRoomView
           data={state.data}
           highlightedWindow={state.highlightedWindow}
-          resettingGrid={state.resettingGrid}
           onJoined={() => fetchRoomDetail(true)}
           onSaveAvailabilityBatch={saveAvailabilityBatch}
-          onResetToPersonalSchedule={resetToPersonalSchedule}
           onHoverWindow={setHighlightedWindow}
           onSelectLock={openLockModal}
           onCopyLink={copyRoomLink}

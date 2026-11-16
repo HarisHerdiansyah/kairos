@@ -9,10 +9,8 @@ import { TimefulGrid } from "@/components/room/TimefulGrid";
 export function OpenRoomView({
   data,
   highlightedWindow,
-  resettingGrid,
   onJoined,
   onSaveAvailabilityBatch,
-  onResetToPersonalSchedule,
   onHoverWindow,
   onSelectLock,
   onCopyLink,
@@ -35,9 +33,7 @@ export function OpenRoomView({
             personalGrid={data.personal_grid}
             personalRoomInput={data.personal_room_input}
             highlightedWindow={highlightedWindow}
-            resettingGrid={resettingGrid}
             onSaveAvailabilityBatch={onSaveAvailabilityBatch}
-            onResetToPersonalSchedule={onResetToPersonalSchedule}
           />
         </div>
 

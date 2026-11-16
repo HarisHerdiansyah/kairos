@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { type FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
@@ -14,9 +14,9 @@ export default function HomePage() {
   const { status } = useSession();
   const isAuthenticated = status === "authenticated";
 
-  const [roomInputCode, setRoomInputCode] = React.useState("");
+  const [roomInputCode, setRoomInputCode] = useState("");
 
-  const handleOpenRoom = (e: React.FormEvent) => {
+  const handleOpenRoom = (e: FormEvent) => {
     e.preventDefault();
     const raw = roomInputCode.trim();
     if (!raw) return;

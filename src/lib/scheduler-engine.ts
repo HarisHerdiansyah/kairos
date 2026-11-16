@@ -16,7 +16,7 @@ import {
   timeToMinutes,
 } from "@/lib/time-utils"
 
-export interface RoomEngineParams {
+interface RoomEngineParams {
   date_from: string
   date_to: string
   time_from: string
@@ -65,7 +65,7 @@ export function generateDayHalfHourSlots(
  * 3. Eventual Block (c)
  * 4. Room-Level Override (d) - only allows "busy" -> "hadir"
  */
-export function resolveUserSlotStatus(
+function resolveUserSlotStatus(
   dateStr: string,
   slotStart: string,
   slotEnd: string,
@@ -147,7 +147,7 @@ export function resolveUserSlotStatus(
  * For guests, room_input represents manual free slots.
  * Any slot outside room_input is considered busy (busy = opposite of room_input).
  */
-export function resolveGuestSlotStatus(
+function resolveGuestSlotStatus(
   dateStr: string,
   slotStart: string,
   slotEnd: string,

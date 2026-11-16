@@ -3,14 +3,14 @@ import { z } from "zod"
 // -------------------------------------------------------------
 // Primitives: Time (30-min resolution) and Date (YYYY-MM-DD WIB)
 // -------------------------------------------------------------
-export const timeRegex = /^(?:[01]\d|2[0-3]):(?:00|30)$|^24:00$/
-export const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+const timeRegex = /^(?:[01]\d|2[0-3]):(?:00|30)$|^24:00$/
+const dateRegex = /^\d{4}-\d{2}-\d{2}$/
 
-export const timeSchema = z
+const timeSchema = z
   .string()
   .regex(timeRegex, { message: "Format jam harus HH:mm dengan kelipatan 30 menit (contoh: '08:00', '08:30')" })
 
-export const dateSchema = z
+const dateSchema = z
   .string()
   .regex(dateRegex, { message: "Format tanggal harus YYYY-MM-DD" })
 
@@ -58,12 +58,10 @@ export const baselineInputSchema = z.object({
   }
 )
 
-export type BaselineInput = z.infer<typeof baselineInputSchema>
-
 // -------------------------------------------------------------
 // Overrides (Jadwal Insidental: Block & Unblock)
 // -------------------------------------------------------------
-export const overrideBlockSchema = z.object({
+const overrideBlockSchema = z.object({
   id: z.string().min(1),
   type: z.literal("block"),
   date_from: dateSchema,
@@ -93,7 +91,7 @@ export const overrideBlockSchema = z.object({
 
 export type OverrideBlock = z.infer<typeof overrideBlockSchema>
 
-export const overrideBlockInputSchema = z.object({
+const overrideBlockInputSchema = z.object({
   type: z.literal("block"),
   date_from: dateSchema,
   date_to: dateSchema,
@@ -120,9 +118,7 @@ export const overrideBlockInputSchema = z.object({
   }
 )
 
-export type OverrideBlockInput = z.infer<typeof overrideBlockInputSchema>
-
-export const overrideUnblockSchema = z.object({
+const overrideUnblockSchema = z.object({
   id: z.string().min(1),
   type: z.literal("unblock"),
   date_from: dateSchema,
@@ -138,7 +134,7 @@ export const overrideUnblockSchema = z.object({
 
 export type OverrideUnblock = z.infer<typeof overrideUnblockSchema>
 
-export const overrideUnblockInputSchema = z.object({
+const overrideUnblockInputSchema = z.object({
   type: z.literal("unblock"),
   date_from: dateSchema,
   date_to: dateSchema,
@@ -150,8 +146,6 @@ export const overrideUnblockInputSchema = z.object({
     path: ["date_to"],
   }
 )
-
-export type OverrideUnblockInput = z.infer<typeof overrideUnblockInputSchema>
 
 export const overrideItemSchema = z.discriminatedUnion("type", [
   overrideBlockSchema,
@@ -165,8 +159,6 @@ export const overrideInputSchema = z.discriminatedUnion("type", [
   overrideUnblockInputSchema,
 ])
 
-export type OverrideInput = z.infer<typeof overrideInputSchema>
-
 // -------------------------------------------------------------
 // Room Input & Locked Slot
 // -------------------------------------------------------------
@@ -178,16 +170,14 @@ export const roomInputSlotSchema = z.object({
 
 export type RoomInputSlot = z.infer<typeof roomInputSlotSchema>
 
-export const lockedSlotSchema = z.object({
-  date: dateSchema,
-  start: timeSchema,
-  end: timeSchema,
-  duration_min: z.number().int().positive(),
-  available_count: z.number().int().nonnegative(),
-  total_participants: z.number().int().positive(),
-})
-
-export type LockedSlot = z.infer<typeof lockedSlotSchema>
+export type LockedSlot = {
+  date: string
+  start: string
+  end: string
+  duration_min: number
+  available_count: number
+  total_participants: number
+}
 
 // -------------------------------------------------------------
 // Engine & UI Computation Structures
@@ -211,7 +201,7 @@ export interface BestTimeRecommendation {
   type: "best_time" | "partial_participant" | "shorter_duration"
 }
 
-export interface DeadlockResult {
+interface DeadlockResult {
   is_deadlock: boolean
   partial_options: BestTimeRecommendation[]
   shorter_options: BestTimeRecommendation[]
@@ -283,26 +273,21 @@ export const roomCreateInputSchema = z
     }
   )
 
-export type RoomCreateInput = z.infer<typeof roomCreateInputSchema>
 export const roomUpdateInputSchema = roomCreateInputSchema
-export type RoomUpdateInput = z.infer<typeof roomUpdateInputSchema>
 
 export const roomJoinGuestInputSchema = z.object({
   guest_name: z.string().trim().min(1, { message: "Nama tidak boleh kosong" }).max(50),
 })
-export type RoomJoinGuestInput = z.infer<typeof roomJoinGuestInputSchema>
 
 export const roomAvailabilityInputSchema = z.object({
   room_input: z.array(roomInputSlotSchema),
 })
-export type RoomAvailabilityInput = z.infer<typeof roomAvailabilityInputSchema>
 
 export const roomLockInputSchema = z.object({
   date: dateSchema,
   start: timeSchema,
   end: timeSchema,
 })
-export type RoomLockInput = z.infer<typeof roomLockInputSchema>
 
 export interface RoomSummary {
   id: string

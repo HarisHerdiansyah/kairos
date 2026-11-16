@@ -1,13 +1,14 @@
+import type { ReactElement } from "react";
+import Link from "next/link";
+import { signOut } from "next-auth/react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import Link from "next/link";
-import { signOut } from "next-auth/react";
 
 type NavbarPopoverProps = {
-  trigger: React.ReactElement;
+  trigger: ReactElement;
 };
 
 export function NavbarPopover({ trigger }: NavbarPopoverProps) {

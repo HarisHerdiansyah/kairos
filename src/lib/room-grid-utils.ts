@@ -19,7 +19,7 @@ import type {
 import { formatShortDateHeader } from "@/lib/format-ui";
 import { cn } from "@/lib/utils";
 
-export function getHeatmapToneClass(
+function getHeatmapToneClass(
   availableCount: number,
   totalParticipants: number,
 ): string {
@@ -42,7 +42,7 @@ export function getHeatmapToneClass(
   return "bg-chart-1";
 }
 
-export function isSlotInHighlightedWindow(
+function isSlotInHighlightedWindow(
   dateStr: string,
   slotStart: string,
   slotEnd: string,
@@ -112,7 +112,7 @@ export function buildDateColumnHeaders(dates: string[]): DateColumnHeader[] {
   });
 }
 
-export function getEffectivePersonalStatus(
+function getEffectivePersonalStatus(
   dateStr: string,
   slotStart: string,
   actor: RoomActor,
@@ -146,7 +146,7 @@ export function getEffectivePersonalStatus(
   };
 }
 
-export function canSlotInteract(
+function canSlotInteract(
   dateStr: string,
   slotStart: string,
   roomStatus: RoomInfo["status"],
@@ -177,7 +177,7 @@ export function computeDragSelectionBounds(
   };
 }
 
-export function isCellInDragBounds(
+function isCellInDragBounds(
   colIdx: number,
   rowIdx: number,
   bounds: DragSelectionBounds | null,

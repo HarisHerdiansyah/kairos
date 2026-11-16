@@ -8,7 +8,6 @@ import type { HighlightedWindow } from "@/types/room";
 import {
   fetchRoomDetailApi,
   joinRoomAsUserApi,
-  resetRoomScheduleApi,
   saveRoomAvailabilityApi,
 } from "@/lib/room-api";
 import { initialRoomPageState, roomPageReducer } from "@/lib/room-reducers";
@@ -109,27 +108,6 @@ export function useRoomDetail() {
     [state, roomId, fetchRoomDetail],
   );
 
-  const resetToPersonalSchedule = useCallback(async () => {
-    const { data } = state;
-    if (!data || data.actor.actor_type !== "user") return;
-
-    dispatch({ type: "SET_RESETTING_GRID", resetting: true });
-    try {
-      const result = await resetRoomScheduleApi(roomId);
-      if (!result.ok) {
-        toast.error(result.error || "Gagal mengembalikan ke jadwal pribadi.");
-        return;
-      }
-
-      toast.success(
-        "Penyesuaian di ruang ini dikembalikan ke jadwal pribadi Anda.",
-      );
-      await fetchRoomDetail(true);
-    } finally {
-      dispatch({ type: "SET_RESETTING_GRID", resetting: false });
-    }
-  }, [state, roomId, fetchRoomDetail]);
-
   const setHighlightedWindow = useCallback(
     (window: HighlightedWindow | null) => {
       dispatch({ type: "SET_HIGHLIGHTED_WINDOW", window });
@@ -150,7 +128,6 @@ export function useRoomDetail() {
     fetchRoomDetail,
     copyRoomLink,
     saveAvailabilityBatch,
-    resetToPersonalSchedule,
     setHighlightedWindow,
     openLockModal,
     setLockDialogOpen,

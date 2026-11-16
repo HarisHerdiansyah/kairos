@@ -24,25 +24,6 @@ export function hashGuestToken(token: string): string {
 }
 
 /**
- * Timing-safe comparison to verify a raw token against the stored SHA-256 hash.
- */
-export function verifyGuestToken(token: string, expectedHash: string): boolean {
-  if (!token || !expectedHash) return false
-  const computedHash = hashGuestToken(token)
-  
-  if (computedHash.length !== expectedHash.length) return false
-  
-  try {
-    return crypto.timingSafeEqual(
-      Buffer.from(computedHash, "hex"),
-      Buffer.from(expectedHash, "hex")
-    )
-  } catch {
-    return false
-  }
-}
-
-/**
  * Extracts the guest token from the incoming HTTP request header `x-guest-token`.
  */
 export function extractGuestToken(request: Request): string | null {

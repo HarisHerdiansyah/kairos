@@ -64,7 +64,7 @@ export const authOptions: NextAuthOptions = {
 /**
  * Gets the current NextAuth session on the server.
  */
-export async function getAuthSession() {
+async function getAuthSession() {
   return getServerSession(authOptions)
 }
 
@@ -80,7 +80,7 @@ export async function getAuthUser(): Promise<User | null> {
   })
 }
 
-export interface RoomActorResult {
+interface RoomActorResult {
   session: DbSession
   isOwner: boolean
   authUser: User | null

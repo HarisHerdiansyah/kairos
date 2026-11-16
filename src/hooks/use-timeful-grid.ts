@@ -241,8 +241,6 @@ export function useTimefulGrid({
   );
 
   return {
-    savingBatch,
-    overrideCount: activeRoomInput.length,
     dateHeaders,
     rows,
     handleCellMouseDown,

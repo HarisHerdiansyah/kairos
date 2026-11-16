@@ -8,7 +8,7 @@ export const DAY_NAMES: Record<number, string> = {
   7: "Minggu",
 }
 
-export const SHORT_DAY_NAMES: Record<number, string> = {
+const SHORT_DAY_NAMES: Record<number, string> = {
   1: "Sen",
   2: "Sel",
   3: "Rab",

@@ -4,7 +4,6 @@ export const initialRoomPageState: RoomPageState = {
   loading: true,
   notFoundError: null,
   data: null,
-  resettingGrid: false,
   highlightedWindow: null,
   lockDialogOpen: false,
   selectedRec: null,
@@ -32,11 +31,6 @@ export function roomPageReducer(
       return {
         ...state,
         loading: action.loading,
-      };
-    case "SET_RESETTING_GRID":
-      return {
-        ...state,
-        resettingGrid: action.resetting,
       };
     case "SET_HIGHLIGHTED_WINDOW":
       return {

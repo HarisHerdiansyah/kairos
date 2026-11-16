@@ -1,18 +1,18 @@
 import type { RoomInputSlot } from "@/types/kairos";
 import { GUEST_TOKEN_PREFIX, type RoomDetailData } from "@/types/room";
 
-export interface ApiResult<T = void> {
+interface ApiResult<T = void> {
   ok: boolean;
   data?: T;
   error?: string;
 }
 
-export function getStoredGuestToken(roomId: string): string | null {
+function getStoredGuestToken(roomId: string): string | null {
   if (typeof window === "undefined" || !roomId) return null;
   return window.localStorage.getItem(`${GUEST_TOKEN_PREFIX}${roomId}`);
 }
 
-export function setStoredGuestToken(roomId: string, token: string): void {
+function setStoredGuestToken(roomId: string, token: string): void {
   if (typeof window === "undefined" || !roomId) return;
   window.localStorage.setItem(`${GUEST_TOKEN_PREFIX}${roomId}`, token);
 }
@@ -120,24 +120,6 @@ export async function saveRoomAvailabilityApi(
     return { ok: true };
   } catch {
     return { ok: false, error: "Gagal memperbarui slot waktu." };
-  }
-}
-
-export async function resetRoomScheduleApi(roomId: string): Promise<ApiResult> {
-  try {
-    const res = await fetch(`/api/v1/rooms/${roomId}/reset`, {
-      method: "POST",
-    });
-    const json = await res.json();
-    if (!res.ok || !json.success) {
-      return {
-        ok: false,
-        error: json.error || "Gagal mengembalikan ke jadwal pribadi.",
-      };
-    }
-    return { ok: true };
-  } catch {
-    return { ok: false, error: "Gagal mereset penyesuaian jadwal." };
   }
 }
 
