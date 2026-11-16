@@ -8,7 +8,7 @@ export const DAY_NAMES: Record<number, string> = {
   7: "Minggu",
 }
 
-export const SHORT_DAY_NAMES: Record<number, string> = {
+const SHORT_DAY_NAMES: Record<number, string> = {
   1: "Sen",
   2: "Sel",
   3: "Rab",
@@ -64,6 +64,20 @@ export function formatDateId(dateStr: string, includeDayName = true): string {
     return `${d} ${monthName} ${y}`
   }
   return `${SHORT_DAY_NAMES[isoDay]}, ${d} ${monthName} ${y}`
+}
+
+/**
+ * Formats a date range into Indonesian format (e.g. "Kam, 12 Nov 2026 – Jum, 13 Nov 2026", or single date if same).
+ */
+export function formatDateRangeId(
+  dateFrom: string,
+  dateTo: string,
+  includeDayName = true,
+): string {
+  if (dateFrom === dateTo) {
+    return formatDateId(dateFrom, includeDayName)
+  }
+  return `${formatDateId(dateFrom, includeDayName)} – ${formatDateId(dateTo, includeDayName)}`
 }
 
 /**

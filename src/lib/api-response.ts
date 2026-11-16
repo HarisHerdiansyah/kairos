@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server"
 import { ZodError } from "zod"
 
-export interface ApiSuccessResponse<T> {
+interface ApiSuccessResponse<T> {
   success: true
   data: T
 }
 
-export interface ApiErrorResponse {
+interface ApiErrorResponse {
   success: false
   error: string
   details?: unknown
