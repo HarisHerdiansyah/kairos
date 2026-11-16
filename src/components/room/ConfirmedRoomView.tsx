@@ -4,13 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 
 import type { ConfirmedRoomViewProps } from "@/types/room";
 import { formatDateId } from "@/lib/format-ui";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ParticipantListCard } from "@/components/room/ParticipantListCard";
 
 export function ConfirmedRoomView({
@@ -29,19 +23,15 @@ export function ConfirmedRoomView({
             <div className="flex items-center gap-2 text-primary">
               <CheckCircle2 className="size-5" />
               <span className="font-sans text-xs font-semibold">
-                JADWAL RAPAT TERKUNCI PERMANEN
+                Sesi Telah Dikunci
               </span>
             </div>
-            <CardTitle className="pt-1 font-serif text-2xl">
+            <CardTitle className="font-serif text-2xl">
               {formatDateId(room.locked_slot.date)}
             </CardTitle>
-            <CardDescription>
-              Ruang temu ini telah dikunci oleh inisiator ({room.owner.name}).
-              Seluruh isian peserta bersifat final dan tidak dapat diubah lagi.
-            </CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-4 pt-6">
+          <CardContent className="space-y-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <div className="rounded-2xl border border-border bg-muted/50 p-4">
                 <span className="text-xs text-muted-foreground">
@@ -79,4 +69,3 @@ export function ConfirmedRoomView({
     </div>
   );
 }
-

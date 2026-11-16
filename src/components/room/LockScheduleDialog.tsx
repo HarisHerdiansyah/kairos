@@ -87,7 +87,7 @@ export function LockScheduleDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="font-serif text-lg">
-            Kunci Jadwal Rapat (Final)
+            Kunci dan Finalisasi Waktu Sesi
           </DialogTitle>
           <DialogDescription>
             Setelah dikunci, status ruang temu berubah menjadi{" "}
@@ -117,8 +117,7 @@ export function LockScheduleDialog({
             {subSlotOptions.length > 1 ? (
               <div className="space-y-2">
                 <Label htmlFor="sub-slot-select">
-                  Pilih Sub-Waktu Spesifik ({room.duration_min} menit) di Dalam
-                  Jendela Ini:
+                  Pilih Waktu Spesifik ({room.duration_min} menit):
                 </Label>
                 <select
                   id="sub-slot-select"

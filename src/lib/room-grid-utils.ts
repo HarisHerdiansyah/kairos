@@ -17,7 +17,6 @@ import type {
   TimefulRowViewModel,
 } from "@/types/room";
 import { formatShortDateHeader } from "@/lib/format-ui";
-import { cn } from "@/lib/utils";
 
 function getHeatmapToneClass(
   availableCount: number,
@@ -402,11 +401,6 @@ export function buildTimefulGridRows({
       const isBusyBlockStart = isUserBusyBlock && !isSameBusyAsPrev;
       const isOverrideBlockStart = isUserOverrideBlock && !isSameOverrideAsPrev;
 
-      const isGuestSelected =
-        actor.is_participant &&
-        actor.actor_type === "guest" &&
-        personalStatus === "free";
-
       const isInDragBox = isCellInDragBounds(colIdx, rowIdx, dragBounds);
 
       const isHighlighted = isSlotInHighlightedWindow(
@@ -425,8 +419,6 @@ export function buildTimefulGridRows({
       } else if (isUserOverrideBlock) {
         cellSurfaceClass =
           "border-l-3 border-l-primary bg-chart-1/85 text-foreground";
-      } else if (isGuestSelected) {
-        cellSurfaceClass = cn(heatmapBgClass, "border-l-3 border-l-primary");
       }
 
       let topBorderClass = "border-t border-dashed border-t-border/50";

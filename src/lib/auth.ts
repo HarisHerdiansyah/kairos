@@ -1,8 +1,16 @@
+import dns from "node:dns"
+import https from "node:https"
+import net from "node:net"
 import { NextAuthOptions, getServerSession } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import { prisma } from "@/lib/prisma"
 import { extractGuestToken, hashGuestToken } from "@/lib/guest-token"
 import type { User, Session as DbSession, SessionParticipant } from "@prisma/client"
+
+dns.setDefaultResultOrder("ipv4first")
+net.setDefaultAutoSelectFamily(false)
+
+const ipv4HttpsAgent = new https.Agent({ family: 4, keepAlive: true })
 
 // Ensure NextAuth uses the /api/v1/auth base path
 if (process.env.NEXTAUTH_URL && !process.env.NEXTAUTH_URL.includes("/api/v1/auth")) {
@@ -18,6 +26,10 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      httpOptions: {
+        timeout: 15000,
+        agent: ipv4HttpsAgent,
+      },
     }),
   ],
   callbacks: {
